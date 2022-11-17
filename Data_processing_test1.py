@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import folium
+import platform
 import glob, os
 #---------------------------------------------------------------------------------
 data_processing_1 = 0
@@ -9,7 +10,11 @@ data_processing_2 = 0
 draw = 1
 #----------------------------------------------------------------------------------
 if (data_processing_1 == 1):
-    path = './'
+    if platform.system() == 'Darwin':
+        user = os.path.expanduser('~')
+        path = user + '/Projects/'
+    else:
+        path = './'
     file = glob.glob(os.path.join(path, "AIS_2019_01_01.csv"))
     print(file)
     Data = []
@@ -101,5 +106,6 @@ def speed_color(speed):
         return 'yellow'
     else:
         return 'red'
-draw_polylines(location, data_oneship['SOG'], ocean_map)
-ocean_map.save('ocean_map_2019_01.html')
+if draw == 1:
+    draw_polylines(location, data_oneship['SOG'], ocean_map)
+    ocean_map.save('ocean_map_2019_01.html')
